@@ -21,7 +21,8 @@
 		mysql_query($sql);
 	}
 	//if($result)
-		echo "<script> alert(\"新增完成\")";
+		echo "<script> alert(\"新增完成\")</script>";
+		header( "Refresh: 0;url=begin.php" );
 	//else
 	//	echo "請重新輸入";
 	//	header("Refresh: 1 ;url = case.php");

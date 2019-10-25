@@ -84,7 +84,7 @@ if ( !isset( $_SESSION[ 'user' ] ) || $_SESSION[ 'user' ] == "" ) {
 					</li>
 					<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">新增<span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="#">案件</a>
+							<li><a href="add_case.html">案件</a>
 							</li>
 							<li role="separator" class="divider"></li>
 							<li><a href="#">申請人</a>
