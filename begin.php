@@ -3,7 +3,7 @@
 session_start();
 if ( !isset( $_SESSION[ 'user' ] ) || $_SESSION[ 'user' ] == "" ) {
 	echo "<script>alert(\"您尚未登入,請先登入\")";
-	header( "Refresh: 1;url=userlogin.php" );
+	header( "Refresh: 0;url=index.php" );
 	exit;
 } else {
 	require_once( "dbconnect.php" );
@@ -87,7 +87,7 @@ if ( !isset( $_SESSION[ 'user' ] ) || $_SESSION[ 'user' ] == "" ) {
 							<li><a href="add_case.html">案件</a>
 							</li>
 							<li role="separator" class="divider"></li>
-							<li><a href="#">申請人</a>
+							<li><a href="add_applyer.html">申請人</a>
 							</li>
 						</ul>
 					</li>

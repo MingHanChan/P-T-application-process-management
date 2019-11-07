@@ -61,7 +61,7 @@ if ( !isset( $_SESSION[ 'user' ] ) || $_SESSION[ 'user' ] == "" ) {
 							<li><a href="add_case.html">案件</a>
 							</li>
 							<li role="separator" class="divider"></li>
-							<li><a href="#">申請人</a>
+							<li><a href="add_applyer.html">申請人</a>
 							</li>
 						</ul>
 					</li>

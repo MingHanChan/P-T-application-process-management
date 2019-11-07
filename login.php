@@ -20,7 +20,7 @@ if ( empty( $_POST[ "account" ] ) || empty( $_POST[ "password" ] ) ) {
 	$num = mysql_num_rows( $result );
 	if ( $num == 0 ) {
 		echo "<script>alert(\"登入失敗,請重新登入\")</script>";
-		header( "Refresh: 1;url=index.html" );
+		header( "Refresh: 0;url=index.html" );
 	} else {
 		$_SESSION[ 'user' ] = $account;
 		$_SESSION[ 'pw' ] = $password;
