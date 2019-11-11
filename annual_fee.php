@@ -1,14 +1,14 @@
-<!DOCTYPE html>
 <?php
 session_start();
 if ( !isset( $_SESSION[ 'user' ] ) || $_SESSION[ 'user' ] == "" ) {
 	echo "<script>alert(\"您尚未登入,請先登入\")";
 	header( "Refresh: 0;url=index.php" );
 	exit;
-} else {
+}else {
 	require_once( "dbconnect.php" );
-	$query = "SELECT office_number ,case_name, applyer_id , case_category ,country, case_status FROM `cases` WHERE case_status!=\"核准\" OR \"核駁\" ORDER BY `office_number`";
-	$result = mysql_query( $query );
+	$query = 
+	$patent_query = "SELECT * FROM `cases` WHERE case_status = \"核准\" AND (case_category=\"發明專利\" OR case_category=\"新型專利\" OR case_category=\"新式樣專利\") ORDER BY `begin_date`";
+	$result = mysql_query( $patent_query );
 	if ( !$result ) {
 		die( "<p>未完成案件總覽錯誤" . mysql_error() );
 	}
@@ -25,7 +25,6 @@ if ( !isset( $_SESSION[ 'user' ] ) || $_SESSION[ 'user' ] == "" ) {
 }
 require('header.php');
 ?>
-
 	<div class="container-fluid">
 		<div class="collapse navbar-collapse" id="defaultNavbar1">
 			<table class="table table-bordered table-hover">
@@ -36,7 +35,7 @@ require('header.php');
 						<th>申請人</th>
 						<th>類別</th>
 						<th>國家</th>
-						<th>狀態</th>
+						<th>到期日期</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -44,9 +43,39 @@ require('header.php');
 					for ( $i = 0; $i < 10; $i++ ) {
 						if(!$row = mysql_fetch_array( $result ))
 							continue;
+						if($row['case_category']=="商標"||$row['case_category']=="證明標章"||$row['case_category']=="團體標章"||$row['case_category']=="團體商標"){
+							//商標
+							$paid = $row['paid']+10;
+							$que = 
+							$res = mysql_query("SELECT ADDDATE('{$row['begin_date']}',INTERVAL $paid YEAR)");
+							$end_date = mysql_fetch_array($res);//取得後十年到期日
+							$res = mysql_query("SELECT SUBDATE('{$end_date[0]}',INTERVAL 6 MONTH)");
+							$remind_date = mysql_fetch_array($res);//到期前六個月提醒日
+							$now_date = date('c');
+							$res = mysql_query("SELECT DATEDIFF('{$remind_date[0]}','{$now_date}')");
+							$remind_day = mysql_fetch_array($res);
+							if($remind_day[0]>0){
+								continue;
+							}
+						}
+						else{
+							//專利 到期展延即可 每年繳
+							$paid = $row['paid'];
+							$res = mysql_query("SELECT ADDDATE('{$row['begin_date']}',INTERVAL $paid YEAR)");
+							$end_date = mysql_fetch_array($res);//取得到期日
+							$res = mysql_query("SELECT SUBDATE('{$end_date[0]}',INTERVAL 3 MONTH)");
+							$remind_date = mysql_fetch_array($res);//到期前三個月提醒日
+							$now_date = date('c');
+							$res = mysql_query("SELECT DATEDIFF('{$remind_date[0]}','{$now_date}')");
+							$remind_day = mysql_fetch_array($res);
+							echo $remind_day[0];
+							if($remind_day[0]>0){
+								continue;
+							}
+						}
 						$name_query = "SELECT custom_name_ch FROM `applyer` WHERE custom_id = \"{$row['applyer_id']}\"";
 						$name = mysql_fetch_array(mysql_query($name_query));
-						?>
+					?>
 					<tr>
 						<td>
 							<?php echo "<a href=#>". $row['office_number'] . "</a>";?>
@@ -64,7 +93,7 @@ require('header.php');
 							<?php echo "<a href=#>". $row['country'] . "</a>";?>
 						</td>
 						<td>
-							<?php echo "<a href=#>". $row['case_status'] . "</a>";?>
+							<?php echo "<a href=#>". $end_date[0] . "</a>";?>
 						</td>
 					</tr>
 					<?php
@@ -89,8 +118,6 @@ require('header.php');
 			<div class="col-md-12"></div>
 		</div>
 	</div>
-	<script src="file:///C|/Users/USER/AppData/Roaming/Adobe/Dreamweaver CC 2018/zh_TW/Configuration/Temp/Assets/eam9FEF.tmp/js/jquery-1.11.3.min.js"></script>
-	<script src="file:///C|/Users/USER/AppData/Roaming/Adobe/Dreamweaver CC 2018/zh_TW/Configuration/Temp/Assets/eam9FEF.tmp/js/bootstrap.js"></script>
 
 </body>
 
