@@ -52,7 +52,7 @@ $applyer = mysql_fetch_array( mysql_query( $query ) );
 							<li><a href="applyer_list.php">全部</a>
 							</li>
 							<li role="separator" class="divider"></li>
-							<li><a href="search_applyer.php">查詢</a>
+							<li><a href="applyer_search.php">查詢</a>
 							</li>
 						</ul>
 					</li>
@@ -61,7 +61,7 @@ $applyer = mysql_fetch_array( mysql_query( $query ) );
 							<li><a href="cases_list.php">全部</a>
 							</li>
 							<li role="separator" class="divider"></li>
-							<li><a href="search_case.php">查詢</a>
+							<li><a href="case_search.php">查詢</a>
 							</li>
 						</ul>
 					</li>
